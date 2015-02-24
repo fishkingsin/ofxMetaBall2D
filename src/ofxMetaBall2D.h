@@ -19,6 +19,7 @@ private:
     
     float threshold;
     float r,g,b;
+    ofFloatColor backgroudColor;
     
 public:
     explicit ofxMetaBall2D();
@@ -26,6 +27,7 @@ public:
     bool setup(float w, float h);
     void setThreshold(float t);
     void setColor(float _r, float _g, float _b);
+    void setBackgroundColor(float _r, float _g, float _b);
     void begin();
     void end();
     void draw(float x, float y);
@@ -35,4 +37,8 @@ public:
     ofTexture createRect(int r, int g, int b,int dt = 4, int h = 200);
     ofTexture rawTexture() { return metaballTex.getTextureReference(); }
     ofFbo getFbo() const { return realMetaballTex; }
+    float getThreshold()
+    {
+        return threshold;
+    }
 };

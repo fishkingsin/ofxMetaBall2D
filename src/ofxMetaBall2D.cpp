@@ -39,17 +39,25 @@ bool ofxMetaBall2D::setup(float w, float h){
                                 uniform float red;
                                 uniform float green;
                                 uniform float blue;
-                                
+                                uniform vec3 background;
                                 void main() {
                                     
                                     vec4 tex = texture2DRect ( texture, gl_TexCoord[0].st );
                                     if (tex.r + tex.g + tex.b != 3.0) {
-                                        tex.r = 0.0;//red;
-                                        tex.g = 0.0;//green;
-                                        tex.b = 0.0;//blue;
+                                        tex.r = red;
+                                        tex.g = green;
+                                        tex.b = blue;
+//                                        tex.a = 1.0;
                                     }
-                                    
-                                    //tex = 1.0 - tex;
+                                    else
+                                    {
+                                        tex.r = background.r;
+                                        tex.g = background.g;
+                                        tex.b = background.b;
+                                    }
+
+
+//                                    tex = 1.0 - tex;
                                     
                                     gl_FragColor = vec4(tex.r , tex.g, tex.b, 1.0);
                                 }
@@ -90,6 +98,17 @@ void ofxMetaBall2D::setColor(float _r, float _g, float _b){
     else{ b = _b; }
     
 }
+//--------------------------------------------------------------
+void ofxMetaBall2D::setBackgroundColor(float _r, float _g, float _b){
+    
+    if (_r > 1.0) { backgroudColor.r = ofMap(_r, 0, 255, 0.0, 1.0); }
+    else{ r = _r; }
+    if (_g > 1.0) { backgroudColor.g = ofMap(_g, 0, 255, 0.0, 1.0); }
+    else{ _g = _g; }
+    if (_b > 1.0) { backgroudColor.b = ofMap(_b, 0, 255, 0.0, 1.0); }
+    else{ b = _b; }
+    
+}
 
 //--------------------------------------------------------------
 void ofxMetaBall2D::begin(){
@@ -127,7 +146,7 @@ void ofxMetaBall2D::end(){
     shader.setUniform1f("red", r);
     shader.setUniform1f("green", g);
     shader.setUniform1f("blue", b);
-    
+    shader.setUniform3f("background", backgroudColor.r, backgroudColor.g, backgroudColor.b);
     t.draw(0, 0);
     shader.end();
     t.unbind();
